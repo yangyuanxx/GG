@@ -4,9 +4,10 @@
 class Sandbox : public GG::Application {
   public:
     Sandbox() {
-      printf("Sandbox\n");
+      printf("Sandbox start\n");
     }
     ~Sandbox() {
+      printf("Sandbox end\n");
     }
 };
 

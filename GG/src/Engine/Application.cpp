@@ -10,6 +10,7 @@ namespace GG {
 
   void Application::Run() {
     printf("Run\n");
-    while(true);
+    volatile bool running = true;
+    while(running);
   }
 }

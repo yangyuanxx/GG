@@ -1,8 +1,0 @@
-/Users/yangyuan/work/GG/build/CMakeFiles/edit_cache.dir
-/Users/yangyuan/work/GG/build/CMakeFiles/rebuild_cache.dir
-/Users/yangyuan/work/GG/build/GG/CMakeFiles/GG.dir
-/Users/yangyuan/work/GG/build/GG/CMakeFiles/edit_cache.dir
-/Users/yangyuan/work/GG/build/GG/CMakeFiles/rebuild_cache.dir
-/Users/yangyuan/work/GG/build/Sandbox/CMakeFiles/Sandbox.dir
-/Users/yangyuan/work/GG/build/Sandbox/CMakeFiles/edit_cache.dir
-/Users/yangyuan/work/GG/build/Sandbox/CMakeFiles/rebuild_cache.dir
