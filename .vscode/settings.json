@@ -1,0 +1,8 @@
+{
+  "cmake.ignoreCMakeListsMissing": true,
+  "files.associations": {
+    "sstream": "cpp",
+    "functional": "cpp",
+    "memory": "cpp"
+  }
+}
