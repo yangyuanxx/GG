@@ -878,8 +878,8 @@
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__functional/unary_negate.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/sstream \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/unordered_set \
-  src/Engine/Events/ApplicationEvent.h src/Engine/Log.h \
-  vendor/spdlog/include/spdlog/spdlog.h \
+  src/Engine/Events/ApplicationEvent.h src/Engine/Events/KeyEvent.h \
+  src/Engine/Log.h vendor/spdlog/include/spdlog/spdlog.h \
   vendor/spdlog/include/spdlog/common.h \
   vendor/spdlog/include/spdlog/details/null_mutex.h \
   vendor/spdlog/include/spdlog/tweakme.h \
@@ -2722,6 +2722,8 @@ src/ggpch.h:
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/unordered_set:
 
 src/Engine/Events/ApplicationEvent.h:
+
+src/Engine/Events/KeyEvent.h:
 
 src/Engine/Log.h:
 
