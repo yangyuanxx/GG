@@ -14,6 +14,10 @@ project "GG"
   targetdir ("bin/" .. outputdir .. "/%{prj.name}")
   objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
+  -- precompiled header，加速编译
+  pchheader "ggpch.h"
+  pchsource "Engine/src/ggpch.cpp"
+
   files {
     "%{prj.name}/src/**.h",
     "%{prj.name}/src/**.cpp"
