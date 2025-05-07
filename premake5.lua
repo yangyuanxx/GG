@@ -25,28 +25,15 @@ project "GG"
     "%{prj.name}/src/**.cpp"
   }
 
-  -- libdirs "%{prj.name}/vendor/GLFW/deps"
-
   includedirs {
     "%{prj.name}/src",
     "%{prj.name}/vendor/spdlog/include",
     "%{prj.name}/vendor/GLFW/include"
   }
 
-  -- defines {
-  --   "_GLFW_COCOA"
-  -- }
-
-  -- links {
-  --   -- "glfw3",
-  --   "GLFW",
-  -- }
-
-  -- filter "system:macosx"
   links {
-    
     "OpenGL.framework",
-    -- "GLUT.framework",  -- 可选，用于简单窗口/渲染
+    -- "GLUT.framework",
     "Cocoa.framework",
     "IOKit.framework",
     -- "CoreFoundation.framework",
@@ -86,40 +73,15 @@ project "Sandbox"
     "%{prj.name}/src/**.cpp"
   }
 
-  -- libdirs "GG/vendor/GLFW/deps"
-
   includedirs {
     "GG/vendor/spdlog/include",
     "GG/vendor/GLFW/include",
     "GG/src",
   }
 
-  -- filter "kind:not StaticLib"
-	-- 	links "glfw3"
-	-- filter {}
-
   links {
     "GG",
-    -- "GL",
-      --   "Cocoa.framework",
-      -- "IOKit.framework",
-      -- "CoreFoundation.framework",
-      -- "CoreGraphics.framework",
-      -- "QuartzCore.framework"
   }
-
-  -- filter "system:macosx"
-  -- defines {
-  --   "_GLFW_COCOA"
-  -- }
-
-  -- links {
-  --     "Cocoa.framework",
-  --     "IOKit.framework",
-  --     "CoreFoundation.framework",
-  --     "CoreGraphics.framework",
-  --     "QuartzCore.framework"
-  -- }
 
   filter "configurations:Debug"
     defines "GG_DEBUG"
