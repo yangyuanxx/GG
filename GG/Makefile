@@ -31,12 +31,10 @@ RESCOMP = windres
 PCH = src/ggpch.h
 PCH_PLACEHOLDER = $(OBJDIR)/$(notdir $(PCH))
 GCH = $(PCH_PLACEHOLDER).gch
-INCLUDES += -Isrc -Ivendor/spdlog/include
+INCLUDES += -Isrc -Ivendor/spdlog/include -Ivendor/GLFW/include
 FORCE_INCLUDE +=
 ALL_CPPFLAGS += $(CPPFLAGS) -MD -MP $(DEFINES) $(INCLUDES)
 ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-LIBS +=
-LDDEPS +=
 ALL_LDFLAGS += $(LDFLAGS) -dynamiclib -Wl,-install_name,@rpath/libGG.dylib
 LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
 define PREBUILDCMDS
@@ -53,6 +51,8 @@ OBJDIR = ../bin-int/Debug-macosx-ARM64/GG
 DEFINES += -DGG_DEBUG
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -fPIC -g
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -fPIC -g -std=c++17
+LIBS += vendor/GLFW/bin/Debug-macosx-ARM64/GLFW/libGLFW.a -framework OpenGL -framework Cocoa -framework IOKit -framework QuartzCore
+LDDEPS += vendor/GLFW/bin/Debug-macosx-ARM64/GLFW/libGLFW.a
 
 else ifeq ($(config),release)
 TARGETDIR = ../bin/Release-macosx-ARM64/GG
@@ -61,6 +61,8 @@ OBJDIR = ../bin-int/Release-macosx-ARM64/GG
 DEFINES += -DGG_RELEASE
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -O2 -fPIC
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -O2 -fPIC -std=c++17
+LIBS += vendor/GLFW/bin/Release-macosx-ARM64/GLFW/libGLFW.a -framework OpenGL -framework Cocoa -framework IOKit -framework QuartzCore
+LDDEPS += vendor/GLFW/bin/Release-macosx-ARM64/GLFW/libGLFW.a
 
 else ifeq ($(config),dist)
 TARGETDIR = ../bin/Dist-macosx-ARM64/GG
@@ -69,6 +71,8 @@ OBJDIR = ../bin-int/Dist-macosx-ARM64/GG
 DEFINES += -DGG_DIST
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -O2 -fPIC
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -O2 -fPIC -std=c++17
+LIBS += vendor/GLFW/bin/Dist-macosx-ARM64/GLFW/libGLFW.a -framework OpenGL -framework Cocoa -framework IOKit -framework QuartzCore
+LDDEPS += vendor/GLFW/bin/Dist-macosx-ARM64/GLFW/libGLFW.a
 
 endif
 
