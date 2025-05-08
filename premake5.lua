@@ -33,14 +33,11 @@ project "GG"
 
   links {
     "OpenGL.framework",
-    -- "GLUT.framework",
     "Cocoa.framework",
     "IOKit.framework",
-    -- "CoreFoundation.framework",
-    -- "CoreGraphics.framework",
+    "CoreFoundation.framework",
     "QuartzCore.framework",
-    "GLFW",
-      
+    "GLFW"
   }
 
   filter "configurations:Debug"

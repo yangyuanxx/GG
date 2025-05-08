@@ -5,8 +5,7 @@
 
 #include "Core.h"
 #include "Events/Event.h"
-
-#include <GLFW/glfw3.h>
+#include "Window.h"
 
 namespace GG {
   class GG_API Application {
@@ -15,7 +14,8 @@ namespace GG {
       virtual ~Application();
       void Run();
     private:
-      GLFWwindow* m_Window = nullptr;
+      std::unique_ptr<Window> m_Window;
+      bool m_Running = true;
   };
 
   // 由应用程序实现

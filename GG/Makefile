@@ -51,7 +51,7 @@ OBJDIR = ../bin-int/Debug-macosx-ARM64/GG
 DEFINES += -DGG_DEBUG
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -fPIC -g
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -fPIC -g -std=c++17
-LIBS += vendor/GLFW/bin/Debug-macosx-ARM64/GLFW/libGLFW.a -framework OpenGL -framework Cocoa -framework IOKit -framework QuartzCore
+LIBS += vendor/GLFW/bin/Debug-macosx-ARM64/GLFW/libGLFW.a -framework OpenGL -framework Cocoa -framework IOKit -framework CoreFoundation -framework QuartzCore
 LDDEPS += vendor/GLFW/bin/Debug-macosx-ARM64/GLFW/libGLFW.a
 
 else ifeq ($(config),release)
@@ -61,7 +61,7 @@ OBJDIR = ../bin-int/Release-macosx-ARM64/GG
 DEFINES += -DGG_RELEASE
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -O2 -fPIC
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -O2 -fPIC -std=c++17
-LIBS += vendor/GLFW/bin/Release-macosx-ARM64/GLFW/libGLFW.a -framework OpenGL -framework Cocoa -framework IOKit -framework QuartzCore
+LIBS += vendor/GLFW/bin/Release-macosx-ARM64/GLFW/libGLFW.a -framework OpenGL -framework Cocoa -framework IOKit -framework CoreFoundation -framework QuartzCore
 LDDEPS += vendor/GLFW/bin/Release-macosx-ARM64/GLFW/libGLFW.a
 
 else ifeq ($(config),dist)
@@ -71,7 +71,7 @@ OBJDIR = ../bin-int/Dist-macosx-ARM64/GG
 DEFINES += -DGG_DIST
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -O2 -fPIC
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -O2 -fPIC -std=c++17
-LIBS += vendor/GLFW/bin/Dist-macosx-ARM64/GLFW/libGLFW.a -framework OpenGL -framework Cocoa -framework IOKit -framework QuartzCore
+LIBS += vendor/GLFW/bin/Dist-macosx-ARM64/GLFW/libGLFW.a -framework OpenGL -framework Cocoa -framework IOKit -framework CoreFoundation -framework QuartzCore
 LDDEPS += vendor/GLFW/bin/Dist-macosx-ARM64/GLFW/libGLFW.a
 
 endif
@@ -88,9 +88,11 @@ OBJECTS :=
 
 GENERATED += $(OBJDIR)/Application.o
 GENERATED += $(OBJDIR)/Log.o
+GENERATED += $(OBJDIR)/MacWindow.o
 GENERATED += $(OBJDIR)/ggpch.o
 OBJECTS += $(OBJDIR)/Application.o
 OBJECTS += $(OBJDIR)/Log.o
+OBJECTS += $(OBJDIR)/MacWindow.o
 OBJECTS += $(OBJDIR)/ggpch.o
 
 # Rules
@@ -159,6 +161,9 @@ $(OBJDIR)/Application.o: src/Engine/Application.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) -include $(PCH_PLACEHOLDER) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Log.o: src/Engine/Log.cpp
+	@echo "$(notdir $<)"
+	$(SILENT) $(CXX) -include $(PCH_PLACEHOLDER) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/MacWindow.o: src/Plaform/Mac/MacWindow.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) -include $(PCH_PLACEHOLDER) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/ggpch.o: src/ggpch.cpp
