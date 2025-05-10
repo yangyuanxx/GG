@@ -1,5 +1,4 @@
 #include "Application.h"
-#include "Events/ApplicationEvent.h"
 #include "Log.h"
 #include "Events/Event.h"
 
@@ -18,7 +17,9 @@ namespace GG {
   }
 
   void Application::OnEvent(Event& e) {
-    GG_CORE_INFO("{0}", e.ToString());
+    EventDispatcher dispatcher(e);
+    dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
+    GG_CORE_TRACE("{0}", e.ToString());
   }
 
   void Application::Run() {
@@ -28,5 +29,10 @@ namespace GG {
       glClear(GL_COLOR_BUFFER_BIT);
       m_Window->OnUpdate();
     }
+  }
+
+  bool Application::OnWindowClose(WindowCloseEvent& e) {
+    m_Running = false;
+    return true;
   }
 }
