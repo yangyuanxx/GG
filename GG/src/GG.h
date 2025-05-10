@@ -2,7 +2,7 @@
 
 // 供 GG 游戏应用使用
 #include "Engine/Application.h"
-
+#include "Engine/Layer.h"
 #include "Engine/Log.h"
 
 // -- Entry Point --
