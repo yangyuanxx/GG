@@ -27,7 +27,8 @@ namespace GG {
   void Application::OnEvent(Event& e) {
     EventDispatcher dispatcher(e);
     dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
-    
+
+    // 触发每一层的 OnEvent 回调
     for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();) {
       (*--it)->OnEvent(e);
       if (e.Handled)
@@ -41,6 +42,7 @@ namespace GG {
       glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
       glClear(GL_COLOR_BUFFER_BIT);
 
+      // 触发每一层 Update 回调
       for(Layer* layer : m_LayerStack) {
         layer->OnUpdate();
       }
