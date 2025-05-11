@@ -31,7 +31,7 @@ RESCOMP = windres
 PCH = src/ggpch.h
 PCH_PLACEHOLDER = $(OBJDIR)/$(notdir $(PCH))
 GCH = $(PCH_PLACEHOLDER).gch
-INCLUDES += -Isrc -Ivendor/spdlog/include -Ivendor/GLFW/include
+INCLUDES += -Isrc -Ivendor/spdlog/include -Ivendor/GLFW/include -Ivendor/Glad/include
 FORCE_INCLUDE +=
 ALL_CPPFLAGS += $(CPPFLAGS) -MD -MP $(DEFINES) $(INCLUDES)
 ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
@@ -48,31 +48,31 @@ ifeq ($(config),debug)
 TARGETDIR = ../bin/Debug-macosx-ARM64/GG
 TARGET = $(TARGETDIR)/libGG.dylib
 OBJDIR = ../bin-int/Debug-macosx-ARM64/GG
-DEFINES += -DGG_DEBUG
+DEFINES += -DGLFW_INCLUDE_NONE -DGG_DEBUG
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -fPIC -g
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -fPIC -g -std=c++17
-LIBS += vendor/GLFW/bin/Debug-macosx-ARM64/GLFW/libGLFW.a -framework OpenGL -framework Cocoa -framework IOKit -framework CoreFoundation -framework QuartzCore
-LDDEPS += vendor/GLFW/bin/Debug-macosx-ARM64/GLFW/libGLFW.a
+LIBS += vendor/GLFW/bin/Debug-macosx-ARM64/GLFW/libGLFW.a vendor/Glad/bin/Debug-macosx-ARM64/Glad/libGlad.a -framework OpenGL -framework Cocoa -framework IOKit -framework CoreFoundation -framework QuartzCore
+LDDEPS += vendor/GLFW/bin/Debug-macosx-ARM64/GLFW/libGLFW.a vendor/Glad/bin/Debug-macosx-ARM64/Glad/libGlad.a
 
 else ifeq ($(config),release)
 TARGETDIR = ../bin/Release-macosx-ARM64/GG
 TARGET = $(TARGETDIR)/libGG.dylib
 OBJDIR = ../bin-int/Release-macosx-ARM64/GG
-DEFINES += -DGG_RELEASE
+DEFINES += -DGLFW_INCLUDE_NONE -DGG_RELEASE
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -O2 -fPIC
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -O2 -fPIC -std=c++17
-LIBS += vendor/GLFW/bin/Release-macosx-ARM64/GLFW/libGLFW.a -framework OpenGL -framework Cocoa -framework IOKit -framework CoreFoundation -framework QuartzCore
-LDDEPS += vendor/GLFW/bin/Release-macosx-ARM64/GLFW/libGLFW.a
+LIBS += vendor/GLFW/bin/Release-macosx-ARM64/GLFW/libGLFW.a vendor/Glad/bin/Release-macosx-ARM64/Glad/libGlad.a -framework OpenGL -framework Cocoa -framework IOKit -framework CoreFoundation -framework QuartzCore
+LDDEPS += vendor/GLFW/bin/Release-macosx-ARM64/GLFW/libGLFW.a vendor/Glad/bin/Release-macosx-ARM64/Glad/libGlad.a
 
 else ifeq ($(config),dist)
 TARGETDIR = ../bin/Dist-macosx-ARM64/GG
 TARGET = $(TARGETDIR)/libGG.dylib
 OBJDIR = ../bin-int/Dist-macosx-ARM64/GG
-DEFINES += -DGG_DIST
+DEFINES += -DGLFW_INCLUDE_NONE -DGG_DIST
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -O2 -fPIC
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -O2 -fPIC -std=c++17
-LIBS += vendor/GLFW/bin/Dist-macosx-ARM64/GLFW/libGLFW.a -framework OpenGL -framework Cocoa -framework IOKit -framework CoreFoundation -framework QuartzCore
-LDDEPS += vendor/GLFW/bin/Dist-macosx-ARM64/GLFW/libGLFW.a
+LIBS += vendor/GLFW/bin/Dist-macosx-ARM64/GLFW/libGLFW.a vendor/Glad/bin/Dist-macosx-ARM64/Glad/libGlad.a -framework OpenGL -framework Cocoa -framework IOKit -framework CoreFoundation -framework QuartzCore
+LDDEPS += vendor/GLFW/bin/Dist-macosx-ARM64/GLFW/libGLFW.a vendor/Glad/bin/Dist-macosx-ARM64/Glad/libGlad.a
 
 endif
 

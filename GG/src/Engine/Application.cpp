@@ -2,7 +2,7 @@
 #include "Log.h"
 #include "Events/Event.h"
 
-#include <GLFW/glfw3.h>
+#include <glad/glad.h>
 
 namespace GG {
 
@@ -11,6 +11,10 @@ namespace GG {
   Application::Application() {
     m_Window = std::unique_ptr<Window>(Window::Create());
     m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
+
+    // 仅现在 opengl 支持，mac 不再支持 opengl
+    // unsigned int id;
+    // glGenVertexArrays(1, &id);
   }
 
   Application::~Application() {
@@ -37,6 +41,10 @@ namespace GG {
   }
 
   void Application::Run() {
+
+    const GLubyte* version = glGetString(GL_VERSION);
+    std::cout << "OpenGL Version: " << version << std::endl;
+
     while(m_Running) {
       // 设置清除颜色并清除缓冲区
       glClearColor(0.0f, 0.0f, 0.0f, 1.0f);

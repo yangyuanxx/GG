@@ -5,6 +5,7 @@ workspace "GG"
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 include "GG/vendor/GLFW"
+include "GG/vendor/Glad"
 
 project "GG"
   location "GG"
@@ -28,7 +29,8 @@ project "GG"
   includedirs {
     "%{prj.name}/src",
     "%{prj.name}/vendor/spdlog/include",
-    "%{prj.name}/vendor/GLFW/include"
+    "%{prj.name}/vendor/GLFW/include",
+    "%{prj.name}/vendor/Glad/include"
   }
 
   links {
@@ -37,7 +39,12 @@ project "GG"
     "IOKit.framework",
     "CoreFoundation.framework",
     "QuartzCore.framework",
-    "GLFW"
+    "GLFW",
+    "Glad"
+  }
+
+  defines {
+    "GLFW_INCLUDE_NONE"
   }
 
   filter "configurations:Debug"
