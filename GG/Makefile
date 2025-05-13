@@ -31,7 +31,7 @@ RESCOMP = windres
 PCH = src/ggpch.h
 PCH_PLACEHOLDER = $(OBJDIR)/$(notdir $(PCH))
 GCH = $(PCH_PLACEHOLDER).gch
-INCLUDES += -Isrc -Ivendor/spdlog/include -Ivendor/GLFW/include -Ivendor/Glad/include
+INCLUDES += -Isrc -Ivendor/spdlog/include -Ivendor/GLFW/include -Ivendor/Glad/include -Ivendor/imgui
 FORCE_INCLUDE +=
 ALL_CPPFLAGS += $(CPPFLAGS) -MD -MP $(DEFINES) $(INCLUDES)
 ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
@@ -49,30 +49,30 @@ TARGETDIR = ../bin/Debug-macosx-ARM64/GG
 TARGET = $(TARGETDIR)/libGG.dylib
 OBJDIR = ../bin-int/Debug-macosx-ARM64/GG
 DEFINES += -DGLFW_INCLUDE_NONE -DGG_DEBUG
-ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -fPIC -g
-ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -fPIC -g -std=c++17
-LIBS += vendor/GLFW/bin/Debug-macosx-ARM64/GLFW/libGLFW.a vendor/Glad/bin/Debug-macosx-ARM64/Glad/libGlad.a -framework OpenGL -framework Cocoa -framework IOKit -framework CoreFoundation -framework QuartzCore
-LDDEPS += vendor/GLFW/bin/Debug-macosx-ARM64/GLFW/libGLFW.a vendor/Glad/bin/Debug-macosx-ARM64/Glad/libGlad.a
+ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -fPIC -g -fvisibility=hidden
+ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -fPIC -g -std=c++17 -fvisibility=hidden
+LIBS += vendor/GLFW/bin/Debug-macosx-ARM64/GLFW/libGLFW.a vendor/Glad/bin/Debug-macosx-ARM64/Glad/libGlad.a vendor/imgui/bin/Debug-macosx-ARM64/ImGui/libImGui.a -framework OpenGL -framework Cocoa -framework IOKit -framework CoreFoundation -framework QuartzCore
+LDDEPS += vendor/GLFW/bin/Debug-macosx-ARM64/GLFW/libGLFW.a vendor/Glad/bin/Debug-macosx-ARM64/Glad/libGlad.a vendor/imgui/bin/Debug-macosx-ARM64/ImGui/libImGui.a
 
 else ifeq ($(config),release)
 TARGETDIR = ../bin/Release-macosx-ARM64/GG
 TARGET = $(TARGETDIR)/libGG.dylib
 OBJDIR = ../bin-int/Release-macosx-ARM64/GG
 DEFINES += -DGLFW_INCLUDE_NONE -DGG_RELEASE
-ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -O2 -fPIC
-ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -O2 -fPIC -std=c++17
-LIBS += vendor/GLFW/bin/Release-macosx-ARM64/GLFW/libGLFW.a vendor/Glad/bin/Release-macosx-ARM64/Glad/libGlad.a -framework OpenGL -framework Cocoa -framework IOKit -framework CoreFoundation -framework QuartzCore
-LDDEPS += vendor/GLFW/bin/Release-macosx-ARM64/GLFW/libGLFW.a vendor/Glad/bin/Release-macosx-ARM64/Glad/libGlad.a
+ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -O2 -fPIC -fvisibility=hidden
+ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -O2 -fPIC -std=c++17 -fvisibility=hidden
+LIBS += vendor/GLFW/bin/Release-macosx-ARM64/GLFW/libGLFW.a vendor/Glad/bin/Release-macosx-ARM64/Glad/libGlad.a vendor/imgui/bin/Release-macosx-ARM64/ImGui/libImGui.a -framework OpenGL -framework Cocoa -framework IOKit -framework CoreFoundation -framework QuartzCore
+LDDEPS += vendor/GLFW/bin/Release-macosx-ARM64/GLFW/libGLFW.a vendor/Glad/bin/Release-macosx-ARM64/Glad/libGlad.a vendor/imgui/bin/Release-macosx-ARM64/ImGui/libImGui.a
 
 else ifeq ($(config),dist)
 TARGETDIR = ../bin/Dist-macosx-ARM64/GG
 TARGET = $(TARGETDIR)/libGG.dylib
 OBJDIR = ../bin-int/Dist-macosx-ARM64/GG
 DEFINES += -DGLFW_INCLUDE_NONE -DGG_DIST
-ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -O2 -fPIC
-ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -O2 -fPIC -std=c++17
-LIBS += vendor/GLFW/bin/Dist-macosx-ARM64/GLFW/libGLFW.a vendor/Glad/bin/Dist-macosx-ARM64/Glad/libGlad.a -framework OpenGL -framework Cocoa -framework IOKit -framework CoreFoundation -framework QuartzCore
-LDDEPS += vendor/GLFW/bin/Dist-macosx-ARM64/GLFW/libGLFW.a vendor/Glad/bin/Dist-macosx-ARM64/Glad/libGlad.a
+ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -O2 -fPIC -fvisibility=hidden
+ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -O2 -fPIC -std=c++17 -fvisibility=hidden
+LIBS += vendor/GLFW/bin/Dist-macosx-ARM64/GLFW/libGLFW.a vendor/Glad/bin/Dist-macosx-ARM64/Glad/libGlad.a vendor/imgui/bin/Dist-macosx-ARM64/ImGui/libImGui.a -framework OpenGL -framework Cocoa -framework IOKit -framework CoreFoundation -framework QuartzCore
+LDDEPS += vendor/GLFW/bin/Dist-macosx-ARM64/GLFW/libGLFW.a vendor/Glad/bin/Dist-macosx-ARM64/Glad/libGlad.a vendor/imgui/bin/Dist-macosx-ARM64/ImGui/libImGui.a
 
 endif
 
@@ -87,17 +87,23 @@ GENERATED :=
 OBJECTS :=
 
 GENERATED += $(OBJDIR)/Application.o
+GENERATED += $(OBJDIR)/ImGuiLayer.o
 GENERATED += $(OBJDIR)/Layer.o
 GENERATED += $(OBJDIR)/LayerStack.o
 GENERATED += $(OBJDIR)/Log.o
 GENERATED += $(OBJDIR)/MacWindow.o
 GENERATED += $(OBJDIR)/ggpch.o
+GENERATED += $(OBJDIR)/imgui_impl_glfw.o
+GENERATED += $(OBJDIR)/imgui_impl_opengl2.o
 OBJECTS += $(OBJDIR)/Application.o
+OBJECTS += $(OBJDIR)/ImGuiLayer.o
 OBJECTS += $(OBJDIR)/Layer.o
 OBJECTS += $(OBJDIR)/LayerStack.o
 OBJECTS += $(OBJDIR)/Log.o
 OBJECTS += $(OBJDIR)/MacWindow.o
 OBJECTS += $(OBJDIR)/ggpch.o
+OBJECTS += $(OBJDIR)/imgui_impl_glfw.o
+OBJECTS += $(OBJDIR)/imgui_impl_opengl2.o
 
 # Rules
 # #############################################
@@ -164,6 +170,9 @@ endif
 $(OBJDIR)/Application.o: src/Engine/Application.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) -include $(PCH_PLACEHOLDER) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/ImGuiLayer.o: src/Engine/ImGui/ImGuiLayer.cpp
+	@echo "$(notdir $<)"
+	$(SILENT) $(CXX) -include $(PCH_PLACEHOLDER) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Layer.o: src/Engine/Layer.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) -include $(PCH_PLACEHOLDER) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
@@ -173,7 +182,13 @@ $(OBJDIR)/LayerStack.o: src/Engine/LayerStack.cpp
 $(OBJDIR)/Log.o: src/Engine/Log.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) -include $(PCH_PLACEHOLDER) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/MacWindow.o: src/Plaform/Mac/MacWindow.cpp
+$(OBJDIR)/MacWindow.o: src/Platform/Mac/MacWindow.cpp
+	@echo "$(notdir $<)"
+	$(SILENT) $(CXX) -include $(PCH_PLACEHOLDER) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/imgui_impl_glfw.o: src/Platform/OpenGL/imgui_impl_glfw.cpp
+	@echo "$(notdir $<)"
+	$(SILENT) $(CXX) -include $(PCH_PLACEHOLDER) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/imgui_impl_opengl2.o: src/Platform/OpenGL/imgui_impl_opengl2.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) -include $(PCH_PLACEHOLDER) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/ggpch.o: src/ggpch.cpp

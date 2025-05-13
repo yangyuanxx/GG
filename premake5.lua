@@ -6,6 +6,7 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 include "GG/vendor/GLFW"
 include "GG/vendor/Glad"
+include "GG/vendor/imgui"
 
 project "GG"
   location "GG"
@@ -13,9 +14,13 @@ project "GG"
   language "C++"
 
   cppdialect "C++17"
+
+  -- 隐藏未导出的符号（需使用 GG_API 宏对符号进行导出）
+  buildoptions { "-fvisibility=hidden" }
   
   targetdir ("bin/" .. outputdir .. "/%{prj.name}")
   objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+
 
   -- precompiled header，加速编译
   pchheader "ggpch.h"
@@ -30,7 +35,8 @@ project "GG"
     "%{prj.name}/src",
     "%{prj.name}/vendor/spdlog/include",
     "%{prj.name}/vendor/GLFW/include",
-    "%{prj.name}/vendor/Glad/include"
+    "%{prj.name}/vendor/Glad/include",
+    "%{prj.name}/vendor/imgui"
   }
 
   links {
@@ -40,7 +46,8 @@ project "GG"
     "CoreFoundation.framework",
     "QuartzCore.framework",
     "GLFW",
-    "Glad"
+    "Glad",
+    "ImGui"
   }
 
   defines {

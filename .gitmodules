@@ -4,3 +4,6 @@
 [submodule "GG/vendor/GLFW"]
 	path = GG/vendor/GLFW
 	url = https://github.com/yangyuanxx/glfw.git
+[submodule "GG/vendor/imgui"]
+	path = GG/vendor/imgui
+	url = git@github.com:yangyuanxx/imgui.git

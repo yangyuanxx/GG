@@ -18,6 +18,7 @@ class Sandbox : public GG::Application {
   public:
     Sandbox() {
       PushLayer(new ExampleLayer());
+      PushOverlay(new GG::ImGuiLayer());
     }
     ~Sandbox() {
       printf("Sandbox end\n");

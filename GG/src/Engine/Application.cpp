@@ -1,20 +1,26 @@
 #include "Application.h"
 #include "Log.h"
 #include "Events/Event.h"
+#include "ImGui/ImGuiLayer.h"
 
 #include <glad/glad.h>
 
 namespace GG {
 
+  Application* Application::s_Instance = nullptr;
+
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
   Application::Application() {
+    GG_CORE_ASSERT(!s_Instance, "Application already exists!");
+    s_Instance = this;
+
     m_Window = std::unique_ptr<Window>(Window::Create());
     m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
 
     // 仅现在 opengl 支持，mac 不再支持 opengl
     // unsigned int id;
-    // glGenVertexArrays(1, &id);
+    // glGenVertexArrays(1, &id);    
   }
 
   Application::~Application() {
@@ -26,6 +32,7 @@ namespace GG {
 
   void Application::PushOverlay(Layer* layer) {
     m_LayerStack.PushOverlay(layer);
+    layer->OnAttach();
   }
 
   void Application::OnEvent(Event& e) {
@@ -44,6 +51,8 @@ namespace GG {
 
     const GLubyte* version = glGetString(GL_VERSION);
     std::cout << "OpenGL Version: " << version << std::endl;
+
+    // PushOverlay(new ImGuiLayer());
 
     while(m_Running) {
       // 设置清除颜色并清除缓冲区

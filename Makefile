@@ -11,18 +11,21 @@ endif
 ifeq ($(config),debug)
   GLFW_config = debug
   Glad_config = debug
+  ImGui_config = debug
   GG_config = debug
   Sandbox_config = debug
 
 else ifeq ($(config),release)
   GLFW_config = release
   Glad_config = release
+  ImGui_config = release
   GG_config = release
   Sandbox_config = release
 
 else ifeq ($(config),dist)
   GLFW_config = dist
   Glad_config = dist
+  ImGui_config = dist
   GG_config = dist
   Sandbox_config = dist
 
@@ -30,7 +33,7 @@ else
   $(error "invalid configuration $(config)")
 endif
 
-PROJECTS := GLFW Glad GG Sandbox
+PROJECTS := GLFW Glad ImGui GG Sandbox
 
 .PHONY: all clean help $(PROJECTS) 
 
@@ -48,7 +51,13 @@ ifneq (,$(Glad_config))
 	@${MAKE} --no-print-directory -C GG/vendor/Glad -f Makefile config=$(Glad_config)
 endif
 
-GG: GLFW Glad
+ImGui:
+ifneq (,$(ImGui_config))
+	@echo "==== Building ImGui ($(ImGui_config)) ===="
+	@${MAKE} --no-print-directory -C GG/vendor/imgui -f Makefile config=$(ImGui_config)
+endif
+
+GG: GLFW Glad ImGui
 ifneq (,$(GG_config))
 	@echo "==== Building GG ($(GG_config)) ===="
 	@${MAKE} --no-print-directory -C GG -f Makefile config=$(GG_config)
@@ -63,6 +72,7 @@ endif
 clean:
 	@${MAKE} --no-print-directory -C GG/vendor/GLFW -f Makefile clean
 	@${MAKE} --no-print-directory -C GG/vendor/Glad -f Makefile clean
+	@${MAKE} --no-print-directory -C GG/vendor/imgui -f Makefile clean
 	@${MAKE} --no-print-directory -C GG -f Makefile clean
 	@${MAKE} --no-print-directory -C Sandbox -f Makefile clean
 
@@ -79,6 +89,7 @@ help:
 	@echo "   clean"
 	@echo "   GLFW"
 	@echo "   Glad"
+	@echo "   ImGui"
 	@echo "   GG"
 	@echo "   Sandbox"
 	@echo ""
