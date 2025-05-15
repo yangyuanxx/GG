@@ -9,14 +9,12 @@ namespace GG {
 
   Application* Application::s_Instance = nullptr;
 
-#define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
-
   Application::Application() {
     GG_CORE_ASSERT(!s_Instance, "Application already exists!");
     s_Instance = this;
 
     m_Window = std::unique_ptr<Window>(Window::Create());
-    m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
+    m_Window->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
 
     // 仅现在 opengl 支持，mac 不再支持 opengl
     // unsigned int id;
@@ -28,6 +26,7 @@ namespace GG {
 
   void Application::PushLayer(Layer* layer) {
     m_LayerStack.PushLayer(layer);
+    layer->OnAttach();
   }
 
   void Application::PushOverlay(Layer* layer) {
@@ -37,9 +36,9 @@ namespace GG {
 
   void Application::OnEvent(Event& e) {
     EventDispatcher dispatcher(e);
-    dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
+    dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::OnWindowClose));
 
-    // 触发每一层的 OnEvent 回调
+    // 触发每一层(Layer)的 OnEvent 回调
     for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();) {
       (*--it)->OnEvent(e);
       if (e.Handled)

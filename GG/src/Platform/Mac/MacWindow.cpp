@@ -106,6 +106,13 @@ namespace GG {
       MouseMovedEvent event((float)xPos, (float)yPos);
       data.EventCallback(event);
     });
+
+    glfwSetCharCallback(m_Window, [](GLFWwindow* window, unsigned int codepoint) {
+      WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+      KeyTypedEvent event(codepoint);
+      data.EventCallback(event);
+    });
+
   }
 
   void MacWindow::Shutdown() {

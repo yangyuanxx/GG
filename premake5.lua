@@ -12,6 +12,7 @@ project "GG"
   location "GG"
   kind "SharedLib"
   language "C++"
+  staticruntime "off"
 
   cppdialect "C++17"
 
@@ -31,12 +32,13 @@ project "GG"
     "%{prj.name}/src/**.cpp"
   }
 
+  -- 只包含一级目录，不包含子目录
   includedirs {
     "%{prj.name}/src",
     "%{prj.name}/vendor/spdlog/include",
     "%{prj.name}/vendor/GLFW/include",
     "%{prj.name}/vendor/Glad/include",
-    "%{prj.name}/vendor/imgui"
+    "%{prj.name}/vendor/imgui",
   }
 
   links {
@@ -73,6 +75,7 @@ project "Sandbox"
   location "Sandbox"
   kind "ConsoleApp"
   language "C++"
+  staticruntime "off"
 
   cppdialect "C++17"
 
@@ -86,7 +89,6 @@ project "Sandbox"
 
   includedirs {
     "GG/vendor/spdlog/include",
-    "GG/vendor/GLFW/include",
     "GG/src",
   }
 

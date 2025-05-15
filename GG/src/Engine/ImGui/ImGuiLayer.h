@@ -2,6 +2,8 @@
 
 #include "Engine/Layer.h"
 #include "Engine/Core.h"
+#include "Engine/Events/MouseEvent.h"
+#include "Engine/Events/KeyEvent.h"
 
 namespace GG {
   class GG_API ImGuiLayer : public Layer {
@@ -14,6 +16,14 @@ namespace GG {
       void OnUpdate();
       void OnEvent(Event& event);
     private:
-
+      bool OnMouseButtionPressedEvent(MouseButtonPressedEvent& e);
+      bool OnMouseButtionReleasedEvent(MouseButtonReleasedEvent& e);
+      bool OnMouseMovedEvent(MouseMovedEvent& e);
+      bool OnMouseScrolledEvent(MouseScrolledEvent& e);
+      bool OnKeyPressedEvent(KeyPressedEvent& e);
+      bool OnKeyReleasedEvent(KeyReleasedEvent& e);
+      bool OnKeyTypedEvent(KeyTypedEvent& e);
+    private:
+      float m_Time = 0.0f;
   };
 }

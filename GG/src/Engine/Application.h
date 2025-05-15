@@ -37,6 +37,6 @@ namespace GG {
       static Application* s_Instance;
   };
 
-  // 由应用程序实现
-  Application* CreateApplication();
+  // 显式的 extern 表示该函数是外部定义的（由应用程序实现）
+  extern Application* CreateApplication();
 }
