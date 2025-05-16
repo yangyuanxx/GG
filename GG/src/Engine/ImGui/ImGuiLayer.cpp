@@ -4,7 +4,6 @@
 #include "Engine/Application.h"
 #include "Platform/OpenGL/imgui_impl_opengl2.h"
 #include "Platform/OpenGL/imgui_impl_glfw.h"
-#include <GLFW/glfw3.h>
 
 ImGuiKey ImGui_ImplGlfw_KeyToImGuiKey(int keycode, int scancode);
 
@@ -74,29 +73,28 @@ namespace GG
   bool ImGuiLayer::OnMouseButtionPressedEvent(MouseButtonPressedEvent &e)
   {
     ImGuiIO &io = ImGui::GetIO();
-    io.MouseDown[e.GetMouseButton()] = true;
+    io.AddMouseButtonEvent(e.GetMouseButton(), true);
     return false;
   }
 
   bool ImGuiLayer::OnMouseButtionReleasedEvent(MouseButtonReleasedEvent &e)
   {
     ImGuiIO &io = ImGui::GetIO();
-    io.MouseDown[e.GetMouseButton()] = false;
+    io.AddMouseButtonEvent(e.GetMouseButton(), false);
     return false;
   }
 
   bool ImGuiLayer::OnMouseMovedEvent(MouseMovedEvent &e)
   {
     ImGuiIO &io = ImGui::GetIO();
-    io.MousePos = ImVec2(e.GetX(), e.GetY());
+    io.AddMousePosEvent(e.GetX(), e.GetY());
     return false;
   }
 
   bool ImGuiLayer::OnMouseScrolledEvent(MouseScrolledEvent &e)
   {
     ImGuiIO &io = ImGui::GetIO();
-    io.MouseWheelH += e.GetXOffset();
-    io.MouseWheel += e.GetYOffset();
+    io.AddMouseWheelEvent(e.GetXOffset(), e.GetYOffset());
     return false;
   }
 
@@ -117,6 +115,10 @@ namespace GG
   {
     ImGuiIO &io = ImGui::GetIO();
     io.AddInputCharacter(e.GetKeyCode());
+    return false;
+  }
+  bool ImGuiLayer::OnWindowResizeEvent(WindowResizeEvent &e)
+  {
     return false;
   }
 }

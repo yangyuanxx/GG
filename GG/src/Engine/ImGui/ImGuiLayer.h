@@ -4,6 +4,7 @@
 #include "Engine/Core.h"
 #include "Engine/Events/MouseEvent.h"
 #include "Engine/Events/KeyEvent.h"
+#include "Engine/Events/ApplicationEvent.h"
 
 namespace GG {
   class GG_API ImGuiLayer : public Layer {
@@ -23,6 +24,7 @@ namespace GG {
       bool OnKeyPressedEvent(KeyPressedEvent& e);
       bool OnKeyReleasedEvent(KeyReleasedEvent& e);
       bool OnKeyTypedEvent(KeyTypedEvent& e);
+      bool OnWindowResizeEvent(WindowResizeEvent& e);
     private:
       float m_Time = 0.0f;
   };
