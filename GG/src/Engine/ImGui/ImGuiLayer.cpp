@@ -2,8 +2,10 @@
 #include "ImGuiLayer.h"
 
 #include "Engine/Application.h"
-#include "Platform/OpenGL/imgui_impl_opengl2.h"
-#include "Platform/OpenGL/imgui_impl_glfw.h"
+#include "backends/imgui_impl_glfw.h"
+#include "backends/imgui_impl_opengl3.h"
+
+#include "GLFW/glfw3.h"
 
 ImGuiKey ImGui_ImplGlfw_KeyToImGuiKey(int keycode, int scancode);
 
@@ -19,111 +21,50 @@ namespace GG
 
   void ImGuiLayer::OnAttach()
   {
-    // 1. 创建 ImGui 上下文
+    const char* glsl_version = "#version 150";
+    IMGUI_CHECKVERSION();
     ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
+    io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
 
-    // 2. 配置样式
-    ImGui::StyleColorsDark(); // 或者使用 ImGui::StyleColorsClassic();
+    ImGui::StyleColorsDark();
 
-    ImGuiIO &io = ImGui::GetIO();
-
-    // 3. 设置平台 & 渲染器后端（这里以 OpenGL2 为例）
-    ImGui_ImplGlfw_InitForOpenGL(
-      (GLFWwindow *)Application::Get().GetWindow().GetNativeWindow(),
-      false // 不安装回调，使用我们自己的事件系统
-    );
-    ImGui_ImplOpenGL2_Init();
+    Application& app = Application::Get();
+    GLFWwindow* window = static_cast<GLFWwindow*>(app.GetWindow().GetNativeWindow());
+    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplOpenGL3_Init(glsl_version);
   }
 
   void ImGuiLayer::OnDetach()
   {
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
   }
 
-  void ImGuiLayer::OnUpdate()
-  {
-    Application &app = Application::Get();
-
-    // 1. 开始新帧
-    ImGui_ImplOpenGL2_NewFrame();
-    ImGui_ImplGlfw_NewFrame(); // 更新鼠标状态等
+  void ImGuiLayer::Begin() {
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
+  }
 
-    // ==== C++ tip ====
-    // 函数内的 static 变量在程序运行期间一直存在，且只会初始化一次。
-    // 这里必须是 static 的，否则每次 OnUpdate show_demo_window 都会被初始化为 true，
-    // 从而导致这个测试窗口永远都关闭不了。
-    // =================
-    // 2. 显示 ImGui 自带的测试窗口
-    static bool show_demo_window = true;
-    if (show_demo_window)
-      ImGui::ShowDemoWindow(&show_demo_window);
-
-    // 3. 绘制所有界面
+  void ImGuiLayer::End() {
+    ImGuiIO& io = ImGui::GetIO();
     ImGui::Render();
-    ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+    if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+    {
+        ImGui::UpdatePlatformWindows();
+        ImGui::RenderPlatformWindowsDefault();
+    }
   }
 
-  void ImGuiLayer::OnEvent(Event &e)
-  {
-    EventDispatcher dispatcher(e);
-    dispatcher.Dispatch<MouseButtonPressedEvent>(BIND_EVENT_FN(ImGuiLayer::OnMouseButtionPressedEvent));
-    dispatcher.Dispatch<MouseButtonReleasedEvent>(BIND_EVENT_FN(ImGuiLayer::OnMouseButtionReleasedEvent));
-    dispatcher.Dispatch<MouseMovedEvent>(BIND_EVENT_FN(ImGuiLayer::OnMouseMovedEvent));
-    dispatcher.Dispatch<MouseScrolledEvent>(BIND_EVENT_FN(ImGuiLayer::OnMouseScrolledEvent));
-    dispatcher.Dispatch<KeyPressedEvent>(BIND_EVENT_FN(ImGuiLayer::OnKeyPressedEvent));
-    dispatcher.Dispatch<KeyReleasedEvent>(BIND_EVENT_FN(ImGuiLayer::OnKeyReleasedEvent));
-    dispatcher.Dispatch<KeyTypedEvent>(BIND_EVENT_FN(ImGuiLayer::OnKeyTypedEvent));
-  }
-
-  bool ImGuiLayer::OnMouseButtionPressedEvent(MouseButtonPressedEvent &e)
-  {
-    ImGuiIO &io = ImGui::GetIO();
-    io.AddMouseButtonEvent(e.GetMouseButton(), true);
-    return false;
-  }
-
-  bool ImGuiLayer::OnMouseButtionReleasedEvent(MouseButtonReleasedEvent &e)
-  {
-    ImGuiIO &io = ImGui::GetIO();
-    io.AddMouseButtonEvent(e.GetMouseButton(), false);
-    return false;
-  }
-
-  bool ImGuiLayer::OnMouseMovedEvent(MouseMovedEvent &e)
-  {
-    ImGuiIO &io = ImGui::GetIO();
-    io.AddMousePosEvent(e.GetX(), e.GetY());
-    return false;
-  }
-
-  bool ImGuiLayer::OnMouseScrolledEvent(MouseScrolledEvent &e)
-  {
-    ImGuiIO &io = ImGui::GetIO();
-    io.AddMouseWheelEvent(e.GetXOffset(), e.GetYOffset());
-    return false;
-  }
-
-  bool ImGuiLayer::OnKeyPressedEvent(KeyPressedEvent &e)
-  {
-    ImGuiIO &io = ImGui::GetIO();
-    io.AddKeyEvent(ImGui_ImplGlfw_KeyToImGuiKey(e.GetKeyCode(), e.GetKeyCode()), true);
-    return false;
-  }
-
-  bool ImGuiLayer::OnKeyReleasedEvent(KeyReleasedEvent &e)
-  {
-    ImGuiIO &io = ImGui::GetIO();
-    io.AddKeyEvent(ImGui_ImplGlfw_KeyToImGuiKey(e.GetKeyCode(), e.GetKeyCode()), false);
-    return false;
-  }
-  bool ImGuiLayer::OnKeyTypedEvent(KeyTypedEvent &e)
-  {
-    ImGuiIO &io = ImGui::GetIO();
-    io.AddInputCharacter(e.GetKeyCode());
-    return false;
-  }
-  bool ImGuiLayer::OnWindowResizeEvent(WindowResizeEvent &e)
-  {
-    return false;
+  void ImGuiLayer::OnImGuiRender() {
+    static bool show = true;
+    ImGui::ShowDemoWindow(&show);
   }
 }

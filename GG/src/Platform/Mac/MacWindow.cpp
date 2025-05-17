@@ -4,6 +4,7 @@
 #include "Engine/Events/KeyEvent.h"
 #include "Engine/Events/MouseEvent.h"
 
+#include "GLFW/glfw3.h"
 #include <glad/glad.h>
 
 namespace GG {
@@ -33,14 +34,22 @@ namespace GG {
       GG_CORE_ASSERT(success, "Could not initialize GLFW!");
       s_GLFWInitialized = true;
     }
+
+    const char* glsl_version = "#version 150";
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // Required on Mac
+
     m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
+
     glfwMakeContextCurrent(m_Window);
+    SetVSync(true);
 
     int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
     GG_CORE_ASSERT(status, "Failed to initialize Glad.");
 
     glfwSetWindowUserPointer(m_Window, &m_Data);
-    SetVSync(true);
 
     // Set GLFW callbacks
     glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height) {

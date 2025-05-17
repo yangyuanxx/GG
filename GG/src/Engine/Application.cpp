@@ -4,8 +4,6 @@
 #include "ImGui/ImGuiLayer.h"
 #include "Input.h"
 
-#include <glad/glad.h>
-
 namespace GG {
 
   Application* Application::s_Instance = nullptr;
@@ -17,9 +15,8 @@ namespace GG {
     m_Window = std::unique_ptr<Window>(Window::Create());
     m_Window->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
 
-    // 仅现在 opengl 支持，mac 不再支持 opengl
-    // unsigned int id;
-    // glGenVertexArrays(1, &id);    
+    m_ImGuiLayer = new ImGuiLayer();
+    PushOverlay(m_ImGuiLayer);
   }
 
   Application::~Application() {
@@ -48,22 +45,19 @@ namespace GG {
   }
 
   void Application::Run() {
-
-    const GLubyte* version = glGetString(GL_VERSION);
-    std::cout << "OpenGL Version: " << version << std::endl;
-
-    // PushOverlay(new ImGuiLayer());
-
-    while(m_Running) {
-      // 设置清除颜色并清除缓冲区
-      glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-      glClear(GL_COLOR_BUFFER_BIT);
-
+    while (m_Running)
+    {
       // 触发每一层 Update 回调
       for(Layer* layer : m_LayerStack) {
         layer->OnUpdate();
       }
-
+      
+      m_ImGuiLayer->Begin();
+      for (Layer* layer : m_LayerStack) {
+        layer->OnImGuiRender();
+      }
+      m_ImGuiLayer->End();
+        
       m_Window->OnUpdate();
     }
   }

@@ -31,7 +31,7 @@ project "GG"
     "%{prj.name}/src/**.h",
     "%{prj.name}/src/**.cpp",
     "%{prj.name}/vendor/glm/glm/**.hpp",
-    "%{prj.name}/vendor/glm/glm/**.inl"
+    "%{prj.name}/vendor/glm/glm/**.inl",
   }
 
   -- 只包含一级目录，不包含子目录
@@ -50,6 +50,7 @@ project "GG"
     "IOKit.framework",
     "CoreFoundation.framework",
     "QuartzCore.framework",
+    "CoreVideo.framework",
     "GLFW",
     "Glad",
     "ImGui"
