@@ -91,6 +91,7 @@ GENERATED += $(OBJDIR)/ImGuiLayer.o
 GENERATED += $(OBJDIR)/Layer.o
 GENERATED += $(OBJDIR)/LayerStack.o
 GENERATED += $(OBJDIR)/Log.o
+GENERATED += $(OBJDIR)/MacInput.o
 GENERATED += $(OBJDIR)/MacWindow.o
 GENERATED += $(OBJDIR)/ggpch.o
 GENERATED += $(OBJDIR)/imgui_impl_glfw.o
@@ -100,6 +101,7 @@ OBJECTS += $(OBJDIR)/ImGuiLayer.o
 OBJECTS += $(OBJDIR)/Layer.o
 OBJECTS += $(OBJDIR)/LayerStack.o
 OBJECTS += $(OBJDIR)/Log.o
+OBJECTS += $(OBJDIR)/MacInput.o
 OBJECTS += $(OBJDIR)/MacWindow.o
 OBJECTS += $(OBJDIR)/ggpch.o
 OBJECTS += $(OBJDIR)/imgui_impl_glfw.o
@@ -180,6 +182,9 @@ $(OBJDIR)/LayerStack.o: src/Engine/LayerStack.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) -include $(PCH_PLACEHOLDER) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Log.o: src/Engine/Log.cpp
+	@echo "$(notdir $<)"
+	$(SILENT) $(CXX) -include $(PCH_PLACEHOLDER) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/MacInput.o: src/Platform/Mac/MacInput.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) -include $(PCH_PLACEHOLDER) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/MacWindow.o: src/Platform/Mac/MacWindow.cpp

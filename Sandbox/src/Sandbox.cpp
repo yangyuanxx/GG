@@ -6,11 +6,13 @@ class ExampleLayer : public GG::Layer {
     ExampleLayer(): Layer("Example") {}
 
     void OnUpdate() override {
-      GG_INFO("ExampleLayer::Update");
+      if (GG::Input::IsKeyPressed(GG_KEY_TAB)) {
+        GG_INFO("Tab key is pressed!");
+      }
     }
 
     void OnEvent(GG::Event& event) override {
-      GG_TRACE("{0}", event.ToString());
+      // GG_TRACE("{0}", event.ToString());
     }
 };
 

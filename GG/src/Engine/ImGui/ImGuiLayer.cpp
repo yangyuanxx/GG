@@ -48,6 +48,11 @@ namespace GG
     ImGui_ImplGlfw_NewFrame(); // 更新鼠标状态等
     ImGui::NewFrame();
 
+    // ==== C++ tip ====
+    // 函数内的 static 变量在程序运行期间一直存在，且只会初始化一次。
+    // 这里必须是 static 的，否则每次 OnUpdate show_demo_window 都会被初始化为 true，
+    // 从而导致这个测试窗口永远都关闭不了。
+    // =================
     // 2. 显示 ImGui 自带的测试窗口
     static bool show_demo_window = true;
     if (show_demo_window)
