@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch Sandbox",
+      "type": "lldb",
+      "request": "launch",
+      "program": "${workspaceFolder}/bin/Debug-macosx-arm64/Sandbox/Sandbox",
+      "args": [],
+      "cwd": "${workspaceFolder}",
+    }
+  ]
+}

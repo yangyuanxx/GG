@@ -29,7 +29,9 @@ project "GG"
 
   files {
     "%{prj.name}/src/**.h",
-    "%{prj.name}/src/**.cpp"
+    "%{prj.name}/src/**.cpp",
+    "%{prj.name}/vendor/glm/glm/**.hpp",
+    "%{prj.name}/vendor/glm/glm/**.inl"
   }
 
   -- 只包含一级目录，不包含子目录
@@ -39,6 +41,7 @@ project "GG"
     "%{prj.name}/vendor/GLFW/include",
     "%{prj.name}/vendor/Glad/include",
     "%{prj.name}/vendor/imgui",
+    "%{prj.name}/vendor/glm"
   }
 
   links {
@@ -90,6 +93,7 @@ project "Sandbox"
   includedirs {
     "GG/vendor/spdlog/include",
     "GG/src",
+    "GG/vendor/glm"
   }
 
   links {
