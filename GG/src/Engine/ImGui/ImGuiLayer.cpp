@@ -6,6 +6,7 @@
 #include "backends/imgui_impl_opengl3.h"
 
 #include "GLFW/glfw3.h"
+#include <glad/glad.h>
 
 ImGuiKey ImGui_ImplGlfw_KeyToImGuiKey(int keycode, int scancode);
 
@@ -21,7 +22,11 @@ namespace GG
 
   void ImGuiLayer::OnAttach()
   {
+    Application& app = Application::Get();
+    GLFWwindow* window = static_cast<GLFWwindow*>(app.GetWindow().GetNativeWindow());
     const char* glsl_version = "#version 150";
+
+    // // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -32,8 +37,6 @@ namespace GG
 
     ImGui::StyleColorsDark();
 
-    Application& app = Application::Get();
-    GLFWwindow* window = static_cast<GLFWwindow*>(app.GetWindow().GetNativeWindow());
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init(glsl_version);
   }
@@ -53,18 +56,26 @@ namespace GG
 
   void ImGuiLayer::End() {
     ImGuiIO& io = ImGui::GetIO();
-    ImGui::Render();
-    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+		Application& app = Application::Get();
+		io.DisplaySize = ImVec2((float)app.GetWindow().GetWidth(), (float)app.GetWindow().GetHeight());
 
-    if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-    {
-        ImGui::UpdatePlatformWindows();
-        ImGui::RenderPlatformWindowsDefault();
-    }
+		// Rendering
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+		{
+			GLFWwindow* backup_current_context = glfwGetCurrentContext();
+			ImGui::UpdatePlatformWindows();
+			ImGui::RenderPlatformWindowsDefault();
+			glfwMakeContextCurrent(backup_current_context);
+		}
   }
 
   void ImGuiLayer::OnImGuiRender() {
     static bool show = true;
-    ImGui::ShowDemoWindow(&show);
+    if (show) {
+      ImGui::ShowDemoWindow(&show);
+    }
   }
 }

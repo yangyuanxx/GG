@@ -24,10 +24,11 @@ namespace GG {
   }
 
   void MacWindow::Init(const WindowProps& props) {
+
     m_Data.Title = props.Title;
     m_Data.Width = props.Width;
     m_Data.Height = props.Height;
-    GG_CORE_INFO("Creating window {0} ({1}, {2})", props.Title, props.Width, props.Height);
+
     if (!s_GLFWInitialized) {
       // TODO: glfwTerminate on shutdown
       int success = glfwInit();
@@ -40,16 +41,17 @@ namespace GG {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // Required on Mac
-
+    
     m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
-
+    if (m_Window == nullptr)
+        return;
     glfwMakeContextCurrent(m_Window);
     SetVSync(true);
 
+    glfwSetWindowUserPointer(m_Window, &m_Data);
+
     int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
     GG_CORE_ASSERT(status, "Failed to initialize Glad.");
-
-    glfwSetWindowUserPointer(m_Window, &m_Data);
 
     // Set GLFW callbacks
     glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height) {
