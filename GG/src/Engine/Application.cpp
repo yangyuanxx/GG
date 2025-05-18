@@ -3,6 +3,7 @@
 #include "Events/Event.h"
 #include "ImGui/ImGuiLayer.h"
 #include "Input.h"
+#include <glad/glad.h>
 
 namespace GG {
 
@@ -47,6 +48,10 @@ namespace GG {
   void Application::Run() {
     while (m_Running)
     {
+
+      glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+      glClear(GL_COLOR_BUFFER_BIT);
+
       // 触发每一层 Update 回调
       for(Layer* layer : m_LayerStack) {
         layer->OnUpdate();
