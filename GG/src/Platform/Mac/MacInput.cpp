@@ -3,29 +3,36 @@
 #include "GLFW/glfw3.h"
 #include "Engine/Application.h"
 
-namespace GG {
+namespace GG
+{
 
-  Input* Input::s_Instance = new MacInput();
+  Input *Input::s_Instance = new MacInput();
 
   bool MacInput::IsKeyPressedImpl(int keycode)
   {
-    auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
-    auto state = glfwGetKey(window, keycode);
+    Application &app = Application::Get();
+    auto nativeWindow = static_cast<GLFWwindow *>(app.GetWindow().GetNativeWindow());
+
+    auto state = glfwGetKey(nativeWindow, keycode);
     return state == GLFW_PRESS || state == GLFW_REPEAT;
   }
 
   bool MacInput::IsMouseButtonPressedImpl(int button)
   {
-    auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
-    auto state = glfwGetMouseButton(window, button);
+    Application &app = Application::Get();
+    auto nativeWindow = static_cast<GLFWwindow *>(app.GetWindow().GetNativeWindow());
+
+    auto state = glfwGetMouseButton(nativeWindow, button);
     return state == GLFW_PRESS;
   }
 
   std::pair<float, float> MacInput::GetMousePosImpl()
   {
-    auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
+    Application &app = Application::Get();
+    auto nativeWindow = static_cast<GLFWwindow *>(app.GetWindow().GetNativeWindow());
+
     double xpos, ypos;
-    glfwGetCursorPos(window, &xpos, &ypos);
+    glfwGetCursorPos(nativeWindow, &xpos, &ypos);
     return std::pair<float, float>(xpos, ypos);
   }
 

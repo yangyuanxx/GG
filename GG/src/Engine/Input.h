@@ -22,10 +22,10 @@ namespace GG {
         return s_Instance->GetMousePosYImpl();
       }
     protected:
-      // ==== C++ tip ====
+      // C++ tip
       // virtual xxx = 0 表示一个纯虚函数，即必须在子类中实现
       // vitrual xxx {} 表示一个普通虚函数，子类可以选择实现或不实现
-      // =================
+      // ____
       virtual bool IsKeyPressedImpl(int keycode) = 0;
       virtual bool IsMouseButtonPressedImpl(int button) = 0;
       virtual std::pair<float, float> GetMousePosImpl() = 0;

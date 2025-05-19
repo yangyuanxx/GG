@@ -25,10 +25,10 @@ namespace GG {
 
       inline Window& GetWindow() { return *m_Window; };
 
-      // ==== C++ tip ====
+      // C++ tip
       // static 成员函数不需要实例化，可以直接通过类名调用，
       // 例如 Application::Get()
-      // =================
+      // ____
       static Application& Get() { return *s_Instance; };
       
     private:
@@ -41,17 +41,17 @@ namespace GG {
       bool m_Running = true;
       LayerStack m_LayerStack;
 
-      // ==== C++ tip ====
+      // C++ tip
       // static 成员变量不需要实例化，可以直接通过类名访问，
       // 例如 Application::s_Instance
-      // =================
+      // ____
       static Application* s_Instance;
   };
 
-  // ==== C++ tip ====
+  // C++ tip
   // 实际上不用显式写出 extern，因为 C++ 默认就是 extern。
   // 显式的 extern 只是为了提升可读性，即表示这个函数的定义在别的地方
-  // =================
+  // ____
   // 该函数由用户实现
   extern Application* CreateApplication();
 }
