@@ -49,7 +49,7 @@ namespace GG {
   void Application::Run() {
     while (m_Running)
     {
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClearColor(0.45f, 0.55f, 0.60f, 1.00f);
         glClear(GL_COLOR_BUFFER_BIT);
 
         // 触发每一层 Update 回调
