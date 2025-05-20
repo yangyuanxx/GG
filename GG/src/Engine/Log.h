@@ -4,7 +4,7 @@
 #include "spdlog/spdlog.h"
 
 namespace GG {
-  class GG_API Log {
+  class Log {
     public:
       static void Init();
       static std::shared_ptr<spdlog::logger>& GetCoreLogger() { return s_CoreLogger; }

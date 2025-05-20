@@ -3,7 +3,7 @@
 #include "Events/Event.h"
 
 namespace GG {
-  class GG_API Input {
+  class Input {
     public:
       // 通过这种方式，我们使得 static 方法变成 "virtual" 的
       inline static bool IsKeyPressed(int keycode) {

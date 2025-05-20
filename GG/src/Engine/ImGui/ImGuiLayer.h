@@ -7,7 +7,7 @@
 #include "Engine/Events/ApplicationEvent.h"
 
 namespace GG {
-  class GG_API ImGuiLayer : public Layer {
+  class ImGuiLayer : public Layer {
     public:
       ImGuiLayer();
       ~ImGuiLayer();

@@ -17,7 +17,7 @@ namespace GG {
       : Title(title), Width(width), Height(height) {}
   };
 
-  class GG_API Window {
+  class Window {
     public:
       using EventCallbackFn = std::function<void(Event&)>;
       

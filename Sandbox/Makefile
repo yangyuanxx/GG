@@ -28,11 +28,11 @@ ifeq ($(origin AR), default)
   AR = ar
 endif
 RESCOMP = windres
-INCLUDES += -I../GG/vendor/spdlog/include -I../GG/src -I../GG/vendor/glm
+INCLUDES += -I../GG/vendor/spdlog/include -I../GG/src -I../GG/vendor -I../GG/vendor/glm
 FORCE_INCLUDE +=
 ALL_CPPFLAGS += $(CPPFLAGS) -MD -MP $(DEFINES) $(INCLUDES)
 ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-ALL_LDFLAGS += $(LDFLAGS) -Wl,-rpath,'@loader_path/../GG'
+ALL_LDFLAGS += $(LDFLAGS)
 LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
 define PREBUILDCMDS
 endef
@@ -48,8 +48,8 @@ OBJDIR = ../bin-int/Debug-macosx-ARM64/Sandbox
 DEFINES += -DGG_DEBUG
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -g
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -g -std=c++17
-LIBS += ../bin/Debug-macosx-ARM64/GG/libGG.dylib
-LDDEPS += ../bin/Debug-macosx-ARM64/GG/libGG.dylib
+LIBS += ../bin/Debug-macosx-ARM64/GG/libGG.a ../GG/vendor/GLFW/bin/Debug-macosx-ARM64/GLFW/libGLFW.a ../GG/vendor/Glad/bin/Debug-macosx-ARM64/Glad/libGlad.a ../GG/vendor/imgui/bin/Debug-macosx-ARM64/ImGui/libImGui.a -framework OpenGL -framework Cocoa -framework IOKit -framework CoreFoundation -framework QuartzCore -framework CoreVideo
+LDDEPS += ../bin/Debug-macosx-ARM64/GG/libGG.a ../GG/vendor/GLFW/bin/Debug-macosx-ARM64/GLFW/libGLFW.a ../GG/vendor/Glad/bin/Debug-macosx-ARM64/Glad/libGlad.a ../GG/vendor/imgui/bin/Debug-macosx-ARM64/ImGui/libImGui.a
 
 else ifeq ($(config),release)
 TARGETDIR = ../bin/Release-macosx-ARM64/Sandbox
@@ -58,8 +58,8 @@ OBJDIR = ../bin-int/Release-macosx-ARM64/Sandbox
 DEFINES += -DGG_RELEASE
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -O2
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -O2 -std=c++17
-LIBS += ../bin/Release-macosx-ARM64/GG/libGG.dylib
-LDDEPS += ../bin/Release-macosx-ARM64/GG/libGG.dylib
+LIBS += ../bin/Release-macosx-ARM64/GG/libGG.a ../GG/vendor/GLFW/bin/Release-macosx-ARM64/GLFW/libGLFW.a ../GG/vendor/Glad/bin/Release-macosx-ARM64/Glad/libGlad.a ../GG/vendor/imgui/bin/Release-macosx-ARM64/ImGui/libImGui.a -framework OpenGL -framework Cocoa -framework IOKit -framework CoreFoundation -framework QuartzCore -framework CoreVideo
+LDDEPS += ../bin/Release-macosx-ARM64/GG/libGG.a ../GG/vendor/GLFW/bin/Release-macosx-ARM64/GLFW/libGLFW.a ../GG/vendor/Glad/bin/Release-macosx-ARM64/Glad/libGlad.a ../GG/vendor/imgui/bin/Release-macosx-ARM64/ImGui/libImGui.a
 
 else ifeq ($(config),dist)
 TARGETDIR = ../bin/Dist-macosx-ARM64/Sandbox
@@ -68,8 +68,8 @@ OBJDIR = ../bin-int/Dist-macosx-ARM64/Sandbox
 DEFINES += -DGG_DIST
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -O2
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -O2 -std=c++17
-LIBS += ../bin/Dist-macosx-ARM64/GG/libGG.dylib
-LDDEPS += ../bin/Dist-macosx-ARM64/GG/libGG.dylib
+LIBS += ../bin/Dist-macosx-ARM64/GG/libGG.a ../GG/vendor/GLFW/bin/Dist-macosx-ARM64/GLFW/libGLFW.a ../GG/vendor/Glad/bin/Dist-macosx-ARM64/Glad/libGlad.a ../GG/vendor/imgui/bin/Dist-macosx-ARM64/ImGui/libImGui.a -framework OpenGL -framework Cocoa -framework IOKit -framework CoreFoundation -framework QuartzCore -framework CoreVideo
+LDDEPS += ../bin/Dist-macosx-ARM64/GG/libGG.a ../GG/vendor/GLFW/bin/Dist-macosx-ARM64/GLFW/libGLFW.a ../GG/vendor/Glad/bin/Dist-macosx-ARM64/Glad/libGlad.a ../GG/vendor/imgui/bin/Dist-macosx-ARM64/ImGui/libImGui.a
 
 endif
 

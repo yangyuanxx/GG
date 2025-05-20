@@ -6,7 +6,7 @@
 	url = https://github.com/yangyuanxx/glfw.git
 [submodule "GG/vendor/imgui"]
 	path = GG/vendor/imgui
-	url = git@github.com:yangyuanxx/imgui.git
+	url = https://github.com/yangyuanxx/imgui.git
 [submodule "GG/vendor/glm"]
 	path = GG/vendor/glm
 	url = https://github.com/g-truc/glm.git
