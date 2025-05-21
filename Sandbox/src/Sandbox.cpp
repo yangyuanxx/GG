@@ -1,4 +1,5 @@
 #include <GG.h>
+#include "imgui.h"
 
 class ExampleLayer : public GG::Layer {
   public:
@@ -13,6 +14,12 @@ class ExampleLayer : public GG::Layer {
 
     void OnEvent(GG::Event& event) override {
       // GG_TRACE("{0}", event.ToString());
+    }
+
+    virtual void OnImGuiRender() override {
+      ImGui::Begin("Hello");
+      ImGui::Text("Hello, world!");
+      ImGui::End();
     }
 };
 

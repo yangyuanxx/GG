@@ -28,7 +28,7 @@ ifeq ($(origin AR), default)
   AR = ar
 endif
 RESCOMP = windres
-INCLUDES += -I../GG/vendor/spdlog/include -I../GG/src -I../GG/vendor/glm
+INCLUDES += -I../GG/vendor/spdlog/include -I../GG/src -I../GG/vendor/glm -I../GG/vendor/imgui
 FORCE_INCLUDE +=
 ALL_CPPFLAGS += $(CPPFLAGS) -MD -MP $(DEFINES) $(INCLUDES)
 ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)

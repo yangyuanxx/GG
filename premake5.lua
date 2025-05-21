@@ -94,7 +94,8 @@ project "Sandbox"
   includedirs {
     "GG/vendor/spdlog/include",
     "GG/src",
-    "GG/vendor/glm"
+    "GG/vendor/glm",
+    "GG/vendor/imgui"
   }
 
   links {
