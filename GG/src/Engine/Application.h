@@ -9,7 +9,7 @@
 #include "ImGui/ImGuiLayer.h"
 
 namespace GG {
-  class GG_API Application {
+  class Application {
     public:
       Application();
       virtual ~Application();

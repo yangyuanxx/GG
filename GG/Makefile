@@ -35,8 +35,10 @@ INCLUDES += -Isrc -Ivendor/spdlog/include -Ivendor/GLFW/include -Ivendor/Glad/in
 FORCE_INCLUDE +=
 ALL_CPPFLAGS += $(CPPFLAGS) -MD -MP $(DEFINES) $(INCLUDES)
 ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-ALL_LDFLAGS += $(LDFLAGS) -dynamiclib -Wl,-install_name,@rpath/libGG.dylib
-LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
+LIBS +=
+LDDEPS +=
+ALL_LDFLAGS += $(LDFLAGS)
+LINKCMD = $(AR) -rcs "$@" $(OBJECTS)
 define PREBUILDCMDS
 endef
 define PRELINKCMDS
@@ -46,33 +48,27 @@ endef
 
 ifeq ($(config),debug)
 TARGETDIR = ../bin/Debug-macosx-ARM64/GG
-TARGET = $(TARGETDIR)/libGG.dylib
+TARGET = $(TARGETDIR)/libGG.a
 OBJDIR = ../bin-int/Debug-macosx-ARM64/GG
 DEFINES += -DGLFW_INCLUDE_NONE -DGG_DEBUG
-ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -fPIC -g -fvisibility=hidden
-ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -fPIC -g -std=c++17 -fvisibility=hidden
-LIBS += vendor/GLFW/bin/Debug-macosx-ARM64/GLFW/libGLFW.a vendor/Glad/bin/Debug-macosx-ARM64/Glad/libGlad.a vendor/imgui/bin/Debug-macosx-ARM64/ImGui/libImGui.a -framework OpenGL -framework Cocoa -framework IOKit -framework CoreFoundation -framework QuartzCore -framework CoreVideo
-LDDEPS += vendor/GLFW/bin/Debug-macosx-ARM64/GLFW/libGLFW.a vendor/Glad/bin/Debug-macosx-ARM64/Glad/libGlad.a vendor/imgui/bin/Debug-macosx-ARM64/ImGui/libImGui.a
+ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -g
+ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -g -std=c++17
 
 else ifeq ($(config),release)
 TARGETDIR = ../bin/Release-macosx-ARM64/GG
-TARGET = $(TARGETDIR)/libGG.dylib
+TARGET = $(TARGETDIR)/libGG.a
 OBJDIR = ../bin-int/Release-macosx-ARM64/GG
 DEFINES += -DGLFW_INCLUDE_NONE -DGG_RELEASE
-ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -O2 -fPIC -fvisibility=hidden
-ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -O2 -fPIC -std=c++17 -fvisibility=hidden
-LIBS += vendor/GLFW/bin/Release-macosx-ARM64/GLFW/libGLFW.a vendor/Glad/bin/Release-macosx-ARM64/Glad/libGlad.a vendor/imgui/bin/Release-macosx-ARM64/ImGui/libImGui.a -framework OpenGL -framework Cocoa -framework IOKit -framework CoreFoundation -framework QuartzCore -framework CoreVideo
-LDDEPS += vendor/GLFW/bin/Release-macosx-ARM64/GLFW/libGLFW.a vendor/Glad/bin/Release-macosx-ARM64/Glad/libGlad.a vendor/imgui/bin/Release-macosx-ARM64/ImGui/libImGui.a
+ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -O2
+ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -O2 -std=c++17
 
 else ifeq ($(config),dist)
 TARGETDIR = ../bin/Dist-macosx-ARM64/GG
-TARGET = $(TARGETDIR)/libGG.dylib
+TARGET = $(TARGETDIR)/libGG.a
 OBJDIR = ../bin-int/Dist-macosx-ARM64/GG
 DEFINES += -DGLFW_INCLUDE_NONE -DGG_DIST
-ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -O2 -fPIC -fvisibility=hidden
-ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -O2 -fPIC -std=c++17 -fvisibility=hidden
-LIBS += vendor/GLFW/bin/Dist-macosx-ARM64/GLFW/libGLFW.a vendor/Glad/bin/Dist-macosx-ARM64/Glad/libGlad.a vendor/imgui/bin/Dist-macosx-ARM64/ImGui/libImGui.a -framework OpenGL -framework Cocoa -framework IOKit -framework CoreFoundation -framework QuartzCore -framework CoreVideo
-LDDEPS += vendor/GLFW/bin/Dist-macosx-ARM64/GLFW/libGLFW.a vendor/Glad/bin/Dist-macosx-ARM64/Glad/libGlad.a vendor/imgui/bin/Dist-macosx-ARM64/ImGui/libImGui.a
+ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -O2
+ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -O2 -std=c++17
 
 endif
 

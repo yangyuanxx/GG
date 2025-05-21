@@ -57,13 +57,13 @@ ifneq (,$(ImGui_config))
 	@${MAKE} --no-print-directory -C GG/vendor/imgui -f Makefile config=$(ImGui_config)
 endif
 
-GG: GLFW Glad ImGui
+GG:
 ifneq (,$(GG_config))
 	@echo "==== Building GG ($(GG_config)) ===="
 	@${MAKE} --no-print-directory -C GG -f Makefile config=$(GG_config)
 endif
 
-Sandbox: GG
+Sandbox: GG GLFW Glad ImGui
 ifneq (,$(Sandbox_config))
 	@echo "==== Building Sandbox ($(Sandbox_config)) ===="
 	@${MAKE} --no-print-directory -C Sandbox -f Makefile config=$(Sandbox_config)

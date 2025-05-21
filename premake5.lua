@@ -10,18 +10,13 @@ include "GG/vendor/imgui"
 
 project "GG"
   location "GG"
-  kind "SharedLib"
+  kind "StaticLib"
   language "C++"
-  staticruntime "off"
-
   cppdialect "C++17"
-
-  -- 隐藏未导出的符号（需使用 GG_API 宏对符号进行导出）
-  buildoptions { "-fvisibility=hidden" }
+  staticruntime "on"
   
   targetdir ("bin/" .. outputdir .. "/%{prj.name}")
   objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
-
 
   -- precompiled header，加速编译
   pchheader "ggpch.h"
@@ -44,18 +39,6 @@ project "GG"
     "%{prj.name}/vendor/glm"
   }
 
-  links {
-    "OpenGL.framework",
-    "Cocoa.framework",
-    "IOKit.framework",
-    "CoreFoundation.framework",
-    "QuartzCore.framework",
-    "CoreVideo.framework",
-    "GLFW",
-    "Glad",
-    "ImGui"
-  }
-
   defines {
     "GLFW_INCLUDE_NONE"
   }
@@ -63,25 +46,24 @@ project "GG"
   filter "configurations:Debug"
     defines "GG_DEBUG"
     runtime "Debug"
-    symbols "On"
+    symbols "on"
     
   filter "configurations:Release"
     defines "GG_RELEASE"
     runtime "Release"
-    optimize "On"
+    optimize "on"
     
   filter "configurations:Dist"
     defines "GG_DIST"
     runtime "Release"
-    optimize "On"
+    optimize "on"
 
 project "Sandbox"
   location "Sandbox"
   kind "ConsoleApp"
   language "C++"
-  staticruntime "off"
-
   cppdialect "C++17"
+  staticruntime "on"
 
   targetdir ("bin/" .. outputdir .. "/%{prj.name}")
   objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -100,19 +82,28 @@ project "Sandbox"
 
   links {
     "GG",
+    "GLFW",
+    "Glad",
+    "ImGui",
+    "OpenGL.framework",
+    "Cocoa.framework",
+    "IOKit.framework",
+    "CoreFoundation.framework",
+    "QuartzCore.framework",
+    "CoreVideo.framework"
   }
 
   filter "configurations:Debug"
     defines "GG_DEBUG"
     runtime "Debug"
-    symbols "On"
+    symbols "on"
     
   filter "configurations:Release"
     defines "GG_RELEASE"
     runtime "Release"
-    optimize "On"
+    optimize "on"
     
   filter "configurations:Dist"
     defines "GG_DIST"
     runtime "Release"
-    optimize "On"
+    optimize "on"
