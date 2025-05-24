@@ -3,6 +3,7 @@
 #include "Engine/Events/ApplicationEvent.h"
 #include "Engine/Events/KeyEvent.h"
 #include "Engine/Events/MouseEvent.h"
+#include "Platform/OpenGL/OpenGLContext.h"
 
 #include "GLFW/glfw3.h"
 #include <glad/glad.h>
@@ -33,6 +34,7 @@ namespace GG
     m_Data.Width = props.Width;
     m_Data.Height = props.Height;
 
+
     if (!s_GLFWInitialized)
     {
       // TODO: glfwTerminate on shutdown
@@ -49,15 +51,12 @@ namespace GG
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
     m_NativeWindow = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
-    if (m_NativeWindow == nullptr)
-      return;
-    glfwMakeContextCurrent(m_NativeWindow);
-    SetVSync(true);
+
+    m_Context = new OpenGLContext(m_NativeWindow);
+    m_Context->Init();
 
     glfwSetWindowUserPointer(m_NativeWindow, &m_Data);
-
-    int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-    GG_CORE_ASSERT(status, "Failed to initialize Glad.");
+    SetVSync(true);
 
     const GLubyte *version = glGetString(GL_VERSION);
     std::cout << "OpenGL Version: " << version << std::endl;
@@ -145,9 +144,7 @@ namespace GG
   void MacWindow::OnUpdate()
   {
     glfwPollEvents();
-
-    // 交换缓冲区，当开启垂直同步时，会等待 vsync 信号
-    glfwSwapBuffers(m_NativeWindow);
+    m_Context->SwapBuffers();
   }
 
   void MacWindow::SetVSync(bool enabled)

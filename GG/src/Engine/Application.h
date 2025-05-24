@@ -38,6 +38,12 @@ namespace GG {
       bool m_Running = true;
       LayerStack m_LayerStack;
 
+      unsigned int m_VertexArray;   // VAO
+      unsigned int m_VertexBuffer;  // VBO
+      unsigned int m_IndexBuffer;   // IBO/EBO
+      unsigned int m_ShaderProgram; // 着色器程序（新增）
+
+    private:
       // C++ tip
       // static 成员变量不需要实例化，可以直接通过类名访问，
       // 例如 Application::s_Instance
