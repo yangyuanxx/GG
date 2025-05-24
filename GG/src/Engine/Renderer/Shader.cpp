@@ -7,17 +7,13 @@ namespace GG
 {
   Shader::Shader(const std::string &vertexSrc, const std::string &fragmentSrc)
   {
-    // Create an empty vertex shader handle
+    // 编译顶点着色器
     GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-
-    // Send the vertex shader source code to GL
-    // Note that std::string's .c_str is NULL character terminated.
     const GLchar *source = (const GLchar *)vertexSrc.c_str();
     glShaderSource(vertexShader, 1, &source, 0);
-
-    // Compile the vertex shader
     glCompileShader(vertexShader);
 
+    // 检查顶点着色器编译错误
     GLint isCompiled = 0;
     glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &isCompiled);
     if (isCompiled == GL_FALSE)
@@ -39,17 +35,13 @@ namespace GG
       return;
     }
 
-    // Create an empty fragment shader handle
+    // 编译片段着色器
     GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-
-    // Send the fragment shader source code to GL
-    // Note that std::string's .c_str is NULL character terminated.
     source = (const GLchar *)fragmentSrc.c_str();
     glShaderSource(fragmentShader, 1, &source, 0);
-
-    // Compile the fragment shader
     glCompileShader(fragmentShader);
 
+    // 检查片段着色器编译错误
     glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &isCompiled);
     if (isCompiled == GL_FALSE)
     {
@@ -70,19 +62,13 @@ namespace GG
       return;
     }
 
-    // Vertex and fragment shaders are successfully compiled.
-    // Now time to link them together into a program.
-    // Get a program object.
-    GLuint m_RendererID = glCreateProgram();
-
-    // Attach our shaders to our program
+    // 链接着色器程序
+    m_RendererID = glCreateProgram();
     glAttachShader(m_RendererID, vertexShader);
     glAttachShader(m_RendererID, fragmentShader);
-
-    // Link our program
     glLinkProgram(m_RendererID);
 
-    // Note the different functions here: glGetProgram* instead of glGetShader*.
+    // 检查着色器程序链接错误
     GLint isLinked = 0;
     glGetProgramiv(m_RendererID, GL_LINK_STATUS, (int *)&isLinked);
     if (isLinked == GL_FALSE)
@@ -105,7 +91,7 @@ namespace GG
       return;
     }
 
-    // Always detach shaders after a successful link.
+    // 删除着色器（已经链接到程序，不再需要）
     glDetachShader(m_RendererID, vertexShader);
     glDetachShader(m_RendererID, fragmentShader);
   }

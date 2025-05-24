@@ -7,6 +7,7 @@
 #include "Layer.h"
 #include "LayerStack.h"
 #include "ImGui/ImGuiLayer.h"
+#include "Renderer/Shader.h"
 
 namespace GG {
   class Application {
@@ -40,8 +41,8 @@ namespace GG {
 
       unsigned int m_VertexArray;   // VAO
       unsigned int m_VertexBuffer;  // VBO
-      unsigned int m_IndexBuffer;   // IBO/EBO
-      unsigned int m_ShaderProgram; // 着色器程序（新增）
+      unsigned int m_IndexBuffer;   // IBO/EBO      
+      std::unique_ptr<Shader> m_Shader;
 
     private:
       // C++ tip

@@ -47,64 +47,29 @@ namespace GG {
     // ========== 着色器程序 ==========
     // 顶点着色器
     const char* vertexShaderSource = R"(
-        #version 410 core
+        #version 330 core
         layout (location = 0) in vec3 aPos;
+
+        out vec3 vPos;
         void main() {
+            vPos = aPos;
             gl_Position = vec4(aPos, 1.0);
         }
     )";
 
     // 片段着色器
     const char* fragmentShaderSource = R"(
-        #version 410 core
+        #version 330 core
         out vec4 FragColor;
+        in vec3 vPos;
+
         void main() {
-            FragColor = vec4(1.0, 0.5, 0.2, 1.0); // 橙色
+            FragColor = vec4(vPos * 0.5 + 0.5, 1.0);
         }
     )";
 
-    // 编译顶点着色器
-    unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-    glCompileShader(vertexShader);
-
-    // 检查顶点着色器编译错误
-    int success;
-    char infoLog[512];
-    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-    if (!success) {
-        glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-        GG_CORE_ERROR("Vertex shader compilation failed: {}", infoLog);
-    }
-
-    // 编译片段着色器
-    unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-    glCompileShader(fragmentShader);
-
-    // 检查片段着色器编译错误
-    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-    if (!success) {
-        glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-        GG_CORE_ERROR("Fragment shader compilation failed: {}", infoLog);
-    }
-
-    // 链接着色器程序
-    m_ShaderProgram = glCreateProgram();
-    glAttachShader(m_ShaderProgram, vertexShader);
-    glAttachShader(m_ShaderProgram, fragmentShader);
-    glLinkProgram(m_ShaderProgram);
-
-    // 检查着色器程序链接错误
-    glGetProgramiv(m_ShaderProgram, GL_LINK_STATUS, &success);
-    if (!success) {
-        glGetProgramInfoLog(m_ShaderProgram, 512, NULL, infoLog);
-        GG_CORE_ERROR("Shader program linking failed: {}", infoLog);
-    }
-
-    // 删除着色器（已经链接到程序，不再需要）
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
+    // 编译着色器
+    m_Shader.reset(new Shader(vertexShaderSource, fragmentShaderSource));
 
   }
 
@@ -140,7 +105,7 @@ namespace GG {
         glClear(GL_COLOR_BUFFER_BIT);
 
         // 绑定着色器程序
-        glUseProgram(m_ShaderProgram);
+        m_Shader->Bind();
 
         glBindVertexArray(m_VertexArray);
         glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
