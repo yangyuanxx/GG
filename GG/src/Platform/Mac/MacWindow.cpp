@@ -58,12 +58,6 @@ namespace GG
     glfwSetWindowUserPointer(m_NativeWindow, &m_Data);
     SetVSync(true);
 
-    const GLubyte *version = glGetString(GL_VERSION);
-    std::cout << "OpenGL Version: " << version << std::endl;
-
-    const GLubyte *glslVersion = glGetString(GL_SHADING_LANGUAGE_VERSION);
-    std::cout << "GLSL Version: " << glslVersion << std::endl;
-
     // Set GLFW callbacks
     glfwSetWindowSizeCallback(m_NativeWindow, [](GLFWwindow *window, int width, int height) {
       WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
